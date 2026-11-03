@@ -157,10 +157,8 @@
         </div>
 
 <div class="copyright">
-    © {{ date('Y') }} CyberZone — Навчальний проєкт | КПІ
-    <p>
-        Працює на Laravel, Composer і залишках мого терпіння :|
-    </p>
+    © {{ date('Y') }} CyberZone - Made by Vsevolod Yaremich | КПІ
+    <p>Працює на Laravel, Composer і залишках мого терпіння :|</p>
 </div>
     </footer>
 <!--
