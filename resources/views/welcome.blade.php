@@ -1,7 +1,7 @@
 
 @extends('layouts.app')
 
-@section('title', 'CyberZone — Головна')
+@section('title', 'CyberZone - Головна')
 
 @push('styles')
 <style>
@@ -111,7 +111,7 @@
             та атмосфера кіберспорту.
         </p>
 
-        <a href="#computers" class="hero-button">
+        <a href="{{ route('home') }}#computers" class="hero-button">
             Обрати комп'ютер →
         </a>
     </div>
@@ -125,7 +125,7 @@
         <p>Потужні системи для сучасних ігор.</p>
     </div>
 
-    <div class="feature">
+    <div class="feature" id="tariffs">
         <div class="feature-icon">⏱️</div>
         <h3>Гнучкі тарифи</h3>
         <p>Погодинна оплата та ігрові пакети.</p>

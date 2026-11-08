@@ -99,6 +99,73 @@
             font-size: 13px;
         }
 
+        .site-page {
+            width: calc(100% - 40px);
+            max-width: 700px;
+            margin: 60px auto;
+            padding: 30px;
+            background: #19233a;
+            border: 1px solid #30334f;
+            border-radius: 12px;
+            overflow-wrap: anywhere;
+        }
+
+        .site-page h1 {
+            color: #c4b5fd;
+        }
+
+        .site-page p,
+        .site-page li {
+            color: #cbd5e1;
+            line-height: 1.8;
+        }
+
+        .site-button {
+            display: inline-block;
+            padding: 14px 24px;
+            background: #7c3aed;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            font: inherit;
+            cursor: pointer;
+        }
+
+        .site-button:hover {
+            background: #6d28d9;
+        }
+
+        .entry-field {
+            margin-bottom: 24px;
+        }
+
+        .entry-field label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .entry-field input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #475569;
+            border-radius: 8px;
+            background: #101827;
+            color: white;
+            font: inherit;
+        }
+
+        .entry-field input:focus {
+            outline: 2px solid #a78bfa;
+            outline-offset: 2px;
+        }
+
+        .entry-field .entry-error {
+            margin-top: 8px;
+            color: #fb7185;
+            font-size: 13px;
+        }
+
         @media (max-width: 650px) {
             nav {
                 flex-direction: column;
@@ -119,15 +186,18 @@
 <body>
 
     <nav>
-        <a class="logo" href="{{ url('/') }}">
+        <a class="logo" href="{{ route('home') }}">
             CYBER<span>ZONE</span>
         </a>
 
         <div class="nav-links">
-            <a href="{{ url('/') }}">Головна</a>
-            <a href="{{ url('/computers') }}">Комп'ютери</a>
-            <a href="{{ url('/tariffs') }}">Тарифи</a>
-            <a href="{{ url('/contact') }}">Контакти</a>
+            <a href="{{ route('home') }}">Головна</a>
+            <a href="{{ route('home') }}#computers">Комп'ютери</a>
+            <a href="{{ route('home') }}#tariffs">Тарифи</a>
+            <a href="{{ route('site.about') }}">Про застосунок</a>
+            <a href="{{ route('site.say') }}">Говоримо привіт</a>
+            <a href="{{ route('entry.form') }}">Форма</a>
+            <a href="{{ route('contact.index') }}">Контакти</a>
         </div>
     </nav>
 
@@ -145,8 +215,8 @@
 
             <div>
                 <h3>Навігація</h3>
-                <p><a href="{{ url('/') }}">Головна</a></p>
-                <p><a href="{{ url('/tariffs') }}">Тарифи</a></p>
+                <p><a href="{{ route('home') }}">Головна</a></p>
+                <p><a href="{{ route('home') }}#tariffs">Тарифи</a></p>
             </div>
 
             <div>
@@ -162,7 +232,7 @@
 </div>
     </footer>
 <!--
-    CyberZone — лабораторна робота №1
+    CyberZone - лабораторна робота №1
 
     Статус системи: працює.
     Статус студента: невідомий.
