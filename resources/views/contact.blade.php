@@ -101,7 +101,7 @@
         </p>
     </div>
 
-    <form action="{{ url('/contact') }}"
+    <form action="{{ route('contact.store') }}"
           method="POST"
           class="contact-form"
           novalidate>
