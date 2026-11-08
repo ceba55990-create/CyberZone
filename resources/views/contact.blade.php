@@ -113,7 +113,7 @@
             <input type="text"
                    id="name"
                    name="name"
-                   value="{{ old('name') }}"
+                   value="{{ is_string(old('name')) ? old('name') : '' }}"
                    placeholder="Введіть ім'я">
 
             @error('name')
@@ -126,7 +126,7 @@
             <input type="email"
                    id="email"
                    name="email"
-                   value="{{ old('email') }}"
+                   value="{{ is_string(old('email')) ? old('email') : '' }}"
                    placeholder="example@gmail.com">
 
             @error('email')
@@ -138,7 +138,7 @@
             <label for="message">Повідомлення</label>
             <textarea id="message"
                       name="message"
-                      placeholder="Ваше повідомлення...">{{ old('message') }}</textarea>
+                      placeholder="Ваше повідомлення...">{{ is_string(old('message')) ? old('message') : '' }}</textarea>
 
             @error('message')
                 <p class="error">{{ $message }}</p>

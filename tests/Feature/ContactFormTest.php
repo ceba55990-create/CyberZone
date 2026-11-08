@@ -2,6 +2,9 @@
 
 namespace Tests\Feature;
 
+use DOMDocument;
+use DOMXPath;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class ContactFormTest extends TestCase
@@ -50,6 +53,58 @@ class ContactFormTest extends TestCase
             ->assertSee('value="test"', false)
             ->assertSee('Які тарифи у CyberZone?')
             ->assertSee('Введіть коректну електронну адресу.');
+    }
+
+    #[DataProvider('arrayContactFields')]
+    public function test_contact_form_handles_array_input_and_preserves_valid_strings(array $arrayFields): void
+    {
+        $data = [
+            'name' => 'Іван "Гравець"',
+            'email' => 'ivan@example.com',
+            'message' => 'Які тарифи & умови <бронювання>?',
+        ];
+
+        foreach ($arrayFields as $field) {
+            $data[$field] = [$data[$field]];
+        }
+
+        $response = $this->from(route('contact.index'))->post(route('contact.store'), $data)
+            ->assertRedirectToRoute('contact.index')
+            ->assertSessionHasErrors($arrayFields);
+
+        foreach (array_diff(array_keys($data), $arrayFields) as $field) {
+            $response->assertSessionDoesntHaveErrors([$field])
+                ->assertSessionHasInput($field, $data[$field]);
+        }
+
+        $form = $this->get(route('contact.index'))->assertOk();
+        $document = new DOMDocument;
+        $previous = libxml_use_internal_errors(true);
+        try {
+            $document->loadHTML('<?xml encoding="UTF-8">'.$form->getContent());
+        } finally {
+            libxml_clear_errors();
+            libxml_use_internal_errors($previous);
+        }
+        $xpath = new DOMXPath($document);
+
+        foreach ($data as $field => $value) {
+            $elements = $xpath->query('//form//input[@name="'.$field.'"] | //form//textarea[@name="'.$field.'"]');
+            $this->assertCount(1, $elements);
+            $element = $elements->item(0);
+            $actual = $field === 'message' ? $element->textContent : $element->getAttribute('value');
+            $this->assertSame(is_string($value) ? $value : '', $actual, "Unexpected value for {$field}");
+        }
+    }
+
+    public static function arrayContactFields(): array
+    {
+        return [
+            'array name' => [['name']],
+            'array email' => [['email']],
+            'array message' => [['message']],
+            'all fields are arrays' => [['name', 'email', 'message']],
+        ];
     }
 
     public function test_contact_form_still_uses_its_own_length_limits(): void
