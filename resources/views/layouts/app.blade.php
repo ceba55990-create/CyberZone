@@ -192,11 +192,12 @@
 
         <div class="nav-links">
             <a href="{{ route('home') }}">Головна</a>
-            <a href="{{ route('home') }}#computers">Комп'ютери</a>
+            <a href="{{ route('computers.index') }}">Комп'ютери</a>
             <a href="{{ route('home') }}#tariffs">Тарифи</a>
             <a href="{{ route('site.about') }}">Про застосунок</a>
             <a href="{{ route('site.say') }}">Говоримо привіт</a>
             <a href="{{ route('entry.form') }}">Форма</a>
+            <a href="{{ route('country.index') }}">Країни</a>
             <a href="{{ route('contact.index') }}">Контакти</a>
         </div>
     </nav>
