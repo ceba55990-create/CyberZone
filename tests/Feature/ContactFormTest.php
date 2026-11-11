@@ -19,6 +19,9 @@ class ContactFormTest extends TestCase
             ->assertSee('name="_token"', false)
             ->assertSee('name="name"', false)
             ->assertSee('name="email"', false)
+            ->assertSee('type="date"', false)
+            ->assertSee('name="visit_date"', false)
+            ->assertSee("Бажана дата відвідування (необов'язково)", false)
             ->assertSee('name="message"', false);
     }
 
@@ -26,7 +29,8 @@ class ContactFormTest extends TestCase
     {
         $this->from(route('contact.index'))->post(route('contact.store'), [])
             ->assertRedirectToRoute('contact.index')
-            ->assertSessionHasErrors(['name', 'email', 'message']);
+            ->assertSessionHasErrors(['name', 'email', 'message'])
+            ->assertSessionDoesntHaveErrors(['visit_date']);
 
         $this->get(route('contact.index'))
             ->assertOk()
@@ -40,17 +44,20 @@ class ContactFormTest extends TestCase
         $this->from(route('contact.index'))->post(route('contact.store'), [
             'name' => 'Іван',
             'email' => 'test',
+            'visit_date' => '2026-11-20',
             'message' => 'Які тарифи у CyberZone?',
         ])->assertRedirectToRoute('contact.index')
             ->assertSessionHasErrors(['email'])
-            ->assertSessionDoesntHaveErrors(['name', 'message'])
+            ->assertSessionDoesntHaveErrors(['name', 'visit_date', 'message'])
             ->assertSessionHasInput('name', 'Іван')
+            ->assertSessionHasInput('visit_date', '2026-11-20')
             ->assertSessionHasInput('message', 'Які тарифи у CyberZone?');
 
         $this->get(route('contact.index'))
             ->assertOk()
             ->assertSee('value="Іван"', false)
             ->assertSee('value="test"', false)
+            ->assertSee('value="2026-11-20"', false)
             ->assertSee('Які тарифи у CyberZone?')
             ->assertSee('Введіть коректну електронну адресу.');
     }
@@ -61,6 +68,7 @@ class ContactFormTest extends TestCase
         $data = [
             'name' => 'Іван "Гравець"',
             'email' => 'ivan@example.com',
+            'visit_date' => '2026-11-20',
             'message' => 'Які тарифи & умови <бронювання>?',
         ];
 
@@ -102,8 +110,84 @@ class ContactFormTest extends TestCase
         return [
             'array name' => [['name']],
             'array email' => [['email']],
+            'array visit date' => [['visit_date']],
             'array message' => [['message']],
-            'all fields are arrays' => [['name', 'email', 'message']],
+            'all fields are arrays' => [['name', 'email', 'visit_date', 'message']],
+        ];
+    }
+
+    #[DataProvider('validVisitDates')]
+    public function test_contact_form_accepts_an_optional_visit_date(?string $visitDate): void
+    {
+        $this->post(route('contact.store'), [
+            'name' => 'Іван',
+            'email' => 'ivan@example.com',
+            'visit_date' => $visitDate,
+            'message' => 'Хочу відвідати CyberZone.',
+        ])->assertOk()
+            ->assertSessionHasNoErrors()
+            ->assertViewIs('contact-success')
+            ->assertViewHas('name', 'Іван')
+            ->assertSee('Форму успішно заповнено!');
+    }
+
+    public static function validVisitDates(): array
+    {
+        return [
+            'null' => [null],
+            'empty string' => [''],
+            'whitespace' => ['   '],
+            'valid date' => ['2026-11-20'],
+            'leap day' => ['2024-02-29'],
+            'first day of the year' => ['2026-01-01'],
+            'last day of the year' => ['2026-12-31'],
+        ];
+    }
+
+    #[DataProvider('invalidVisitDates')]
+    public function test_contact_form_rejects_invalid_visit_dates_and_keeps_old_input(mixed $visitDate): void
+    {
+        $this->from(route('contact.index'))->post(route('contact.store'), [
+            'name' => 'Іван',
+            'email' => 'ivan@example.com',
+            'visit_date' => $visitDate,
+            'message' => 'Хочу відвідати CyberZone.',
+        ])->assertRedirectToRoute('contact.index')
+            ->assertSessionHasErrors([
+                'visit_date' => 'Вкажіть коректну дату відвідування у форматі РРРР-ММ-ДД.',
+            ])
+            ->assertSessionDoesntHaveErrors(['name', 'email', 'message'])
+            ->assertSessionHasInput('name', 'Іван')
+            ->assertSessionHasInput('email', 'ivan@example.com')
+            ->assertSessionHasInput('visit_date', $visitDate)
+            ->assertSessionHasInput('message', 'Хочу відвідати CyberZone.');
+
+        $this->get(route('contact.index'))
+            ->assertOk()
+            ->assertSee('value="Іван"', false)
+            ->assertSee('value="ivan@example.com"', false)
+            ->assertSee('value="'.e(is_string($visitDate) ? $visitDate : '').'"', false)
+            ->assertSee('Хочу відвідати CyberZone.')
+            ->assertSee('Вкажіть коректну дату відвідування у форматі РРРР-ММ-ДД.');
+    }
+
+    public static function invalidVisitDates(): array
+    {
+        return [
+            'text' => ['not-a-date'],
+            'different format' => ['20.11.2026'],
+            'missing leading zeros' => ['2026-2-3'],
+            'non-leap day' => ['2026-02-29'],
+            'impossible day' => ['2026-04-31'],
+            'invalid month' => ['2026-13-01'],
+            'zero month' => ['2026-00-10'],
+            'zero day' => ['2026-01-00'],
+            'date with time' => ['2026-11-20 18:00:00'],
+            'HTML' => ['"><script>alert(1)</script>'],
+            'integer' => [20261120],
+            'boolean' => [true],
+            'array' => [['2026-11-20']],
+            'empty array' => [[]],
         ];
     }
 

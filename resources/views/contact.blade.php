@@ -135,6 +135,18 @@
         </div>
 
         <div class="form-group">
+            <label for="visit_date">Бажана дата відвідування (необов'язково)</label>
+            <input type="date"
+                   id="visit_date"
+                   name="visit_date"
+                   value="{{ is_string(old('visit_date')) ? old('visit_date') : '' }}">
+
+            @error('visit_date')
+                <p class="error">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <div class="form-group">
             <label for="message">Повідомлення</label>
             <textarea id="message"
                       name="message"

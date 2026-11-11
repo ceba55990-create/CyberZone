@@ -16,6 +16,7 @@ class ContactFormRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:100'],
             'email' => ['required', 'email', 'max:255'],
+            'visit_date' => ['nullable', 'date_format:Y-m-d'],
             'message' => ['required', 'string', 'max:2000'],
         ];
     }
@@ -26,6 +27,7 @@ class ContactFormRequest extends FormRequest
             'name.required' => "Вкажіть ваше ім'я.",
             'email.required' => 'Вкажіть електронну пошту.',
             'email.email' => 'Введіть коректну електронну адресу.',
+            'visit_date.date_format' => 'Вкажіть коректну дату відвідування у форматі РРРР-ММ-ДД.',
             'message.required' => 'Введіть текст повідомлення.',
         ];
     }
