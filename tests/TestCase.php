@@ -25,10 +25,14 @@ abstract class TestCase extends BaseTestCase
             throw new LogicException('Feature tests require an isolated SQLite in-memory database.');
         }
 
-        $migration = require database_path('migrations/2026_11_09_010803_create_country_table.php');
-        $migration->up();
-
-        $computerMigration = require database_path('migrations/2026_11_09_042646_create_computers_table.php');
-        $computerMigration->up();
+        foreach ([
+            '2026_11_09_010803_create_country_table.php',
+            '2026_11_09_042646_create_computers_table.php',
+            '2026_11_22_000000_create_tracker_table.php',
+            '2026_11_22_000001_add_status_filter_to_tracker_table.php',
+        ] as $migrationFile) {
+            $migration = require database_path('migrations/'.$migrationFile);
+            $migration->up();
+        }
     }
 }

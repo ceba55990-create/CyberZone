@@ -228,7 +228,7 @@
         </div>
 
 <div class="copyright">
-    © {{ date('Y') }} CyberZone - Made by Vsevolod Yaremich | КПІ
+    © {{ date('Y') }} CyberZone - Made by Vsevolod Yaremich | КПІ | РЕ-п41
     <p>Працює на Laravel, Composer і залишках мого терпіння :|</p>
 </div>
     </footer>
