@@ -1,0 +1,234 @@
+.blog-page {
+    max-width: 1100px;
+}
+
+.blog-page a {
+    color: #c4b5fd;
+    text-underline-offset: 4px;
+}
+
+.blog-cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    margin-top: 24px;
+}
+
+.blog-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid #303f5b;
+    border-radius: 14px;
+    background: #101827;
+    transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.blog-card-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    background: #19233a;
+}
+
+.blog-card h2 {
+    margin: 0 22px 14px;
+    font-size: 1.35rem;
+    line-height: 1.4;
+}
+
+.blog-card h2 a {
+    color: #f1f5f9;
+    text-decoration: none;
+}
+
+.blog-card h2 a:hover {
+    color: #c4b5fd;
+}
+
+.blog-card .blog-card-category {
+    align-self: flex-start;
+    margin: 20px 22px 14px;
+    padding: 4px 10px;
+    max-width: calc(100% - 44px);
+    border: 1px solid #54447d;
+    border-radius: 6px;
+    background: #29203f;
+    color: #ddd6fe;
+    font-size: 0.8rem;
+    line-height: 1.5;
+}
+
+.blog-card .blog-card-meta {
+    margin: 0 22px 5px;
+    color: #aab8cf;
+    font-size: 0.85rem;
+    line-height: 1.6;
+}
+
+.blog-card .blog-card-description {
+    margin: 14px 22px 22px;
+    color: #cbd5e1;
+    line-height: 1.75;
+}
+
+.blog-card .blog-read-more {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    align-self: flex-start;
+    margin: auto 22px 22px;
+    padding: 10px 16px;
+    border: 1px solid #8b5cf6;
+    border-radius: 8px;
+    background: #6d28d9;
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.blog-card .blog-read-more:hover {
+    background: #7c3aed;
+}
+
+.blog-table-scroll {
+    overflow-x: auto;
+}
+
+.blog-table {
+    width: 100%;
+    min-width: 650px;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.blog-table th,
+.blog-table td {
+    padding: 12px;
+    border-bottom: 1px solid #475569;
+}
+
+.blog-table th {
+    background: #101827;
+    color: #c4b5fd;
+}
+
+.blog-table th:nth-child(3),
+.blog-table td:nth-child(3) {
+    white-space: nowrap;
+    word-break: normal;
+    overflow-wrap: normal;
+}
+
+.blog-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.blog-actions a,
+.blog-actions button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 36px;
+    padding: 8px 12px;
+    border: 1px solid #65558b;
+    border-radius: 6px;
+    background: #28213f;
+    color: #ede9fe;
+    font: inherit;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.blog-actions a:hover {
+    background: #3a2c58;
+}
+
+.blog-actions button {
+    border-color: #9f4660;
+    background: #471c30;
+    color: #ffe4e6;
+}
+
+.blog-actions button:hover {
+    background: #68263e;
+}
+
+.blog-actions form {
+    margin: 0;
+}
+
+.blog-page .blog-pagination {
+    padding: 24px 0 0;
+    background: transparent;
+    border: none;
+    justify-content: center;
+}
+
+.blog-pagination ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.blog-pagination a,
+.blog-pagination span {
+    display: block;
+    padding: 8px 12px;
+    border: 1px solid #475569;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #cbd5e1;
+}
+
+.blog-pagination [aria-current="page"] {
+    background: #7c3aed;
+    color: white;
+}
+
+.blog-pagination [aria-disabled="true"] {
+    color: #94a3b8;
+}
+
+.blog-page a:focus-visible,
+.blog-page button:focus-visible {
+    outline: 2px solid #c4b5fd;
+    outline-offset: 3px;
+}
+
+@media (hover: hover) {
+    .blog-card:hover {
+        transform: translateY(-3px);
+        border-color: #8b5cf6;
+        box-shadow: 0 10px 28px #080f2180;
+    }
+}
+
+@media (max-width: 760px) {
+    .blog-cards {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .blog-card {
+        transition: none;
+    }
+
+    .blog-card:hover {
+        transform: none;
+    }
+}
