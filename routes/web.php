@@ -4,6 +4,7 @@ use App\Http\Controllers\ComputerController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\SiteController;
+use App\Http\Controllers\StatsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -30,3 +31,12 @@ Route::post('/contact', [ContactController::class, 'store'])
 Route::resource('country', CountryController::class);
 
 Route::resource('computers', ComputerController::class);
+
+Route::get('/stats', [StatsController::class, 'pages'])
+    ->name('stats.pages');
+
+Route::get('/stats/detail', [StatsController::class, 'detail'])
+    ->name('stats.detail');
+
+Route::get('/stats/filters', [StatsController::class, 'filters'])
+    ->name('stats.filters');
