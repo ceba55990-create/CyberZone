@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ComputerController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CountryController;
@@ -31,6 +32,10 @@ Route::post('/contact', [ContactController::class, 'store'])
 Route::resource('country', CountryController::class);
 
 Route::resource('computers', ComputerController::class);
+
+Route::get('/blog/admin', [BlogController::class, 'admin'])->name('blog.admin');
+
+Route::resource('blog', BlogController::class);
 
 Route::get('/stats', [StatsController::class, 'pages'])
     ->name('stats.pages');
